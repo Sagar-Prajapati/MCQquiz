@@ -14,6 +14,6 @@ Student:
                                               
 ********* To Run This Application**********                      
 1.Download or clone this repo                
-2.run non install                           
+2.run npm install                           
 3.configure .env file as per your environment.                           
 4.npm start                                            

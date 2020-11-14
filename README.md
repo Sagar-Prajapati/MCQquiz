@@ -10,7 +10,8 @@ Faculty:
 Student:                      
   1.login                      
   2.get list of test which can appear                
-  3.start that test                       
+  3.start that test.                   
+  4.submit the test.                                            
                                               
 ********* To Run This Application**********                      
 1.Download or clone this repo                

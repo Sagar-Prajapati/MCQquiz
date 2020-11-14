@@ -36,12 +36,25 @@ exports.selectedTest = async(req,res,next)=>{
     await db.collection(quizId).find().toArray(function(err,result2){ 
         if(err) return next(new AppError("No Question Created Yet",401));
         result2.forEach(element=>{
+            data2={
+                que_id:element._id,
+                question:element.question,
+                questionId:element.questionId,
+                options:element.options,
+                marks:element.marks
+            }
             testQuestion.push(data2);
         })  
         res.send({result:"Attempt All Questions",testQuestion});
     });
 };
 
-
+exports.submitTest = async(req,res,next)=>{
+    for(var key in req.body){
+        if(req.body.hasOwnProperty(key)){
+            console.log(req.body[key]);
+        }
+    }
+}
 
 

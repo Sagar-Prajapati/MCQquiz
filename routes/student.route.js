@@ -11,4 +11,6 @@ router.get('/testlist',auth,studentController.getTests);
 
 router.get('/select-test',auth,studentController.selectedTest);
 
+router.post('/submit-test',auth,studentController.submitTest);
+
 module.exports = router;

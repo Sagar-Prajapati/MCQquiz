@@ -2,7 +2,7 @@
 
 APIs used 
 
-Faculty:
+Faculty:                           
   1.create quiz          
   2.add question to quiz              
   3.create student for test                

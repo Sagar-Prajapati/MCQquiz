@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const quizList = require('../models/quizList');
 const studentList = require('../models/student');
 const AppError = require('../util/appErrors');
+const { db } = require('../models/quizList');
 
 exports.login = async(req,res,next)=>{
     const {enroll,password}=req.body;
@@ -37,7 +38,7 @@ exports.selectedTest = async(req,res,next)=>{
         if(err) return next(new AppError("No Question Created Yet",401));
         result2.forEach(element=>{
             data2={
-                que_id:element._id,
+                id:element._id,
                 question:element.question,
                 questionId:element.questionId,
                 options:element.options,
@@ -45,16 +46,34 @@ exports.selectedTest = async(req,res,next)=>{
             }
             testQuestion.push(data2);
         })  
-        res.send({result:"Attempt All Questions",testQuestion});
+        res.send({
+            result:"You can Shart Test Now, Attempt All Questions",
+            testOf:req.body.quizId,
+            testQuestion
+        });
     });
 };
 
 exports.submitTest = async(req,res,next)=>{
-    for(var key in req.body){
-        if(req.body.hasOwnProperty(key)){
-            console.log(req.body[key]);
-        }
-    }
+    const testOf = req.body.testOf;
+    const responds = req.body.respond;
+    var calculatedResult = await CalculateResult(responds,testOf);
+    console.log(calculatedResult);
 }
 
 
+function CalculateResult(arrayData,collectionName){
+    return new Promise((resolve,reject)=>{
+        const db= mongoose.connection;   
+        var sumResult = 0;
+           arrayData.forEach(element=>{
+               var id = mongoose.Types.ObjectId(element.que_id);
+               db.collection(`${collectionName+"-quiz"}`).findOne({_id:id}).then(data1=>{
+                 if(element.submitedAns === data1.answer){
+                     sumResult = sumResult + parseInt(data1.marks);
+                 }
+              });
+           });
+      resolve(sumResult);
+   })
+}

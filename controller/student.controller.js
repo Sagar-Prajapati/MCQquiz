@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const quizList = require('../models/quizList');
 const studentList = require('../models/student');
 const AppError = require('../util/appErrors');
-const { db } = require('../models/quizList');
+const resultList = require('../models/result');
 
 exports.login = async(req,res,next)=>{
     const {enroll,password}=req.body;
@@ -58,7 +58,17 @@ exports.submitTest = async(req,res,next)=>{
     const testOf = req.body.testOf;
     const responds = req.body.respond;
     var calculatedResult = await CalculateResult(responds,testOf);
-    console.log(calculatedResult);
+    const saveTest = new resultList({
+        studentEnroll:req.user.studentEnroll,
+        studentName:req.user.studentName,
+        class:req.user.studentClass,
+        testAppeared:testOf,
+        totalMarkScore:calculatedResult
+    });
+    await saveTest.save().then(r=>{
+        saveQuestion(r._id,responds);
+    })
+    res.send({result:"Your Test is Submitted"});
 }
 
 
@@ -66,14 +76,22 @@ function CalculateResult(arrayData,collectionName){
     return new Promise((resolve,reject)=>{
         const db= mongoose.connection;   
         var sumResult = 0;
+        var i=0;
            arrayData.forEach(element=>{
                var id = mongoose.Types.ObjectId(element.que_id);
-               db.collection(`${collectionName+"-quiz"}`).findOne({_id:id}).then(data1=>{
+                db.collection(`${collectionName+"-quiz"}`).findOne({_id:id}).then(data1=>{
                  if(element.submitedAns === data1.answer){
-                     sumResult = sumResult + parseInt(data1.marks);
+                      sumResult = sumResult + parseInt(data1.marks);
+                      i++;
                  }
+                 else{
+                     i++
+                }
+                 }).then(()=>{
+                    if(i==arrayData.length){resolve(sumResult);}
+              }).catch(err=>{
+                  reject(err);
               });
            });
-      resolve(sumResult);
-   })
+   });
 }

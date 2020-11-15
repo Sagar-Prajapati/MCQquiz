@@ -1,43 +1,5 @@
-quizlist 
-1.unique id
-2.quiz Name
-3.quiz description.
-4.created by(faculty name)
-5.faculty ID
-6.date
-
-
-
-
-quiz questions
-
-1.questionText:string,
-2.options:[],
-3.answer:string,
-4.questionActive,
-5.marks
-6.quizId,
-
-Create Quiz
-create Questions
-
-
-students
-
-login.
-select quiz
-submit answers
-get result.
-
-result
-
-get result by id
-
-
-
-
 Student Login
-
+dummy student logins created for development purpose.
 1. Login = 190511201730,Password(8 Character) = jw7icwzu
 2. Login = 190511201731,Password(8 Character) = 5033vv2g
 3. Login = 190511201732,Password(8 Character) = XU9GL44g

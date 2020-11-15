@@ -65,10 +65,9 @@ exports.submitTest = async(req,res,next)=>{
         testAppeared:testOf,
         totalMarkScore:calculatedResult
     });
-    await saveTest.save().then(r=>{
-        saveQuestion(r._id,responds);
-    })
-    res.send({result:"Your Test is Submitted"});
+    const r = await saveTest.save()
+    await saveQuestions(r._id,responds);      
+    res.send({result:"Your Test is Submitted and Your Calculated Result is "+r.totalMarkScore+" Marks"});
 }
 
 
@@ -95,3 +94,15 @@ function CalculateResult(arrayData,collectionName){
            });
    });
 }
+
+function saveQuestions(id,arrayData){
+    return new Promise((resolve,reject)=>{
+        arrayData.forEach(element=>{
+            resultList.findOneAndUpdate({_id:id},
+                {$push:{quesAtempt:{
+                    queId:element.que_id,
+                    ansSubmitted:element.submitedAns
+                }}}).then(()=>{resolve("Succed")}).catch(err=>{reject(err);});
+        }
+  )})  
+} 

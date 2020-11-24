@@ -1,6 +1,0 @@
-Student Login
-dummy student logins created for development purpose.
-1. Login = 190511201730,Password(8 Character) = jw7icwzu
-2. Login = 190511201731,Password(8 Character) = 5033vv2g
-3. Login = 190511201732,Password(8 Character) = XU9GL44g
-4. Login = 190511201733,Password(8 Character) = JQUY9hcq
